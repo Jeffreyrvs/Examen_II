@@ -40,8 +40,11 @@ export class AuthService {
     const hashPassword = await bcrypt.hash(password, numRound);
     createUserDto.password = hashPassword;
 
+    // 4. Asignamos el rol
+
+
     // 3. Guardamos en la base de datos
-    const user = await this.usersRepository.save(createUserDto);
+    const user = await this.usersRepository.save({createUserDto, role: 'user'});
 
     return {
       name: user.name,
@@ -82,7 +85,8 @@ export class AuthService {
     const payload = {
       sub: emailExist.id,
       name: emailExist.name,
-      password: emailExist.email
+      password: emailExist.email,
+      role: emailExist.role
     };
 
     const token = await this.jwtService.signAsync(payload);
