@@ -40,13 +40,8 @@ export class AuthService {
     const hashPassword = await bcrypt.hash(password, numRound);
     createUserDto.password = hashPassword;
 
-    const user_aux = this.usersRepository.create({
-      ...createUserDto,
-      role: 'user',
-    });
-
     // 3. Guardamos en la base de datos
-    const user = await this.usersRepository.save(user_aux);
+    const user = await this.usersRepository.save(createUserDto);
 
     return {
       name: user.name,
