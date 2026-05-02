@@ -82,7 +82,7 @@ export class AuthService {
     const payload = {
       sub: emailExist.id,
       name: emailExist.name,
-      password: emailExist.email,
+      email: emailExist.email,
       role: emailExist.role
     };
 
