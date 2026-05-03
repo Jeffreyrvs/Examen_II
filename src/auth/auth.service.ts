@@ -1,5 +1,4 @@
 import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
@@ -82,7 +81,6 @@ export class AuthService {
     const payload = {
       sub: emailExist.id,
       name: emailExist.name,
-      email: emailExist.email,
       role: emailExist.role
     };
 

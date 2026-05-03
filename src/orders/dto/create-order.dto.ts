@@ -1,6 +1,6 @@
 import { Type } from "class-transformer";
 import { IsArray, IsEmail, IsInt, IsNumber, IsString, ValidateNested } from "class-validator";
-import { CreateOrderDetailDto } from "src/order_details/dto/create-order_detail.dto";
+import { CreateOrderDetailDto } from "src/orders/dto/create-order_detail.dto";
 
 export class CreateOrderDto {
     @IsInt()

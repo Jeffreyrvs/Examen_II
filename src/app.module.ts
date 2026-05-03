@@ -5,11 +5,9 @@ import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { ProductsModule } from './products/products.module';
-import { CategoriesModule } from './categories/categories.module';
-import { OptionsModule } from './options/options.module';
-import { OrderDetailsModule } from './order_details/order_details.module';
 import { CustomersModule } from './customers/customers.module';
 import { OrdersModule } from './orders/orders.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -28,11 +26,9 @@ import { OrdersModule } from './orders/orders.module';
       synchronize: true,
     }),
     ProductsModule,
-    CategoriesModule,
-    OptionsModule,
-    OrderDetailsModule,
     CustomersModule,
     OrdersModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

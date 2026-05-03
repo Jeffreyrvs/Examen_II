@@ -14,6 +14,7 @@ import { JwtModule } from '@nestjs/jwt';
       global: true,
       secret: 'Mi frase secreta para generar el token',
       signOptions: { expiresIn: '300s' },
-    }),]
+    }),],
+  exports: [TypeOrmModule]
 })
 export class AuthModule {}
