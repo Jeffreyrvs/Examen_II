@@ -20,9 +20,17 @@ export class ProductsService {
     ) { }
 
   // Métodos para Products
-  createProduct(createProductDto: CreateProductDto): Promise <Product> {
-    const product = this.repoProduct.create(createProductDto);
-    return this.repoProduct.save(product);
+  async createProduct(createProductDto: CreateProductDto): Promise <Product> {
+    const { categoryIds, optionIds, ...productData } = createProductDto;
+
+      const product = this.repoProduct.create({
+        ...productData,
+        // Mapear ids en la relación
+        categories: categoryIds.map(id => ({ id })), 
+        options: optionIds.map(id => ({ id })),
+      });
+
+      return await this.repoProduct.save(product);
   }
 
   findAllProducts(): Promise <Product []> {
@@ -76,7 +84,7 @@ export class ProductsService {
   // Métodos para Categories
   createCategory(createCategoryDto: CreateCategoryDto): Promise <Category> {
     const category = this.repoCategory.create(createCategoryDto);
-    return this.repoOption.save(category);
+    return this.repoCategory.save(category);
   }
 
   findAllCategories(): Promise <Category []> {

@@ -19,7 +19,10 @@ export class Order {
     @Column()
     order_email!: string;
 
-    @Column({ type: 'timestamp' })
+    @Column({ 
+    type: 'timestamp', 
+    default: () => 'CURRENT_TIMESTAMP' 
+    })
     order_date!: Date;
 
     @Column()
