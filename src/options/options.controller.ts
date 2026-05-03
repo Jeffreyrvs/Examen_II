@@ -1,12 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { OptionsService } from './options.service';
 import { CreateOptionDto } from './dto/create-option.dto';
 import { UpdateOptionDto } from './dto/update-option.dto';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { RolesGuard } from 'src/auth/roles.guard';
+import { Roles } from 'src/auth/roles.decorator';
+import { Role } from 'src/auth/role.enum';
 
 @Controller('options')
 export class OptionsController {
   constructor(private readonly optionsService: OptionsService) {}
 
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.DEVELOPER)
   @Post()
   create(@Body() createOptionDto: CreateOptionDto) {
     return this.optionsService.create(createOptionDto);
