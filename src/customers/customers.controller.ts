@@ -12,27 +12,33 @@ export class CustomersController {
   constructor(private readonly customersService: CustomersService) {}
 
   @UseGuards(AuthGuard, RolesGuard)
-  @Roles(Role.DEVELOPER)
+  @Roles(Role.DEVELOPER, Role.ADMIN)
   @Post()
   create(@Body() createCustomerDto: CreateCustomerDto) {
     return this.customersService.create(createCustomerDto);
   }
 
+  @UseGuards(AuthGuard)
   @Get()
   findAll() {
     return this.customersService.findAll();
   }
 
+  @UseGuards(AuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.customersService.findOne(+id);
   }
 
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.DEVELOPER)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCustomerDto: UpdateCustomerDto) {
     return this.customersService.update(+id, updateCustomerDto);
   }
 
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.customersService.remove(+id);

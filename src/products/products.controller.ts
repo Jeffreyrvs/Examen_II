@@ -17,27 +17,33 @@ export class ProductsController {
 
   // --- PRODUCTS ---
   @UseGuards(AuthGuard, RolesGuard)
-  @Roles(Role.DEVELOPER)
+  @Roles(Role.DEVELOPER, Role.ADMIN)
   @Post()
   createProduct(@Body() createProductDto: CreateProductDto) {
     return this.productsService.createProduct(createProductDto);
   }
 
+  @UseGuards(AuthGuard)
   @Get()
   findAllProducts() {
     return this.productsService.findAllProducts();
   }
 
+  @UseGuards(AuthGuard)
   @Get(':id')
   findOneProduct(@Param('id') id: string) {
     return this.productsService.findOneProduct(+id);
   }
 
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.DEVELOPER, Role.ADMIN)
   @Patch(':id')
   updateProduct(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
     return this.productsService.updateProduct(+id, updateProductDto);
   }
 
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   @Delete(':id')
   removeProduct(@Param('id') id: string) {
     return this.productsService.deleteProduct(+id);
@@ -45,27 +51,33 @@ export class ProductsController {
 
   // --- OPTIONS ---
   @UseGuards(AuthGuard, RolesGuard)
-  @Roles(Role.DEVELOPER)
+  @Roles(Role.DEVELOPER, Role.ADMIN)
   @Post('/options')
   createOption(@Body() createOptionDto: CreateOptionDto) {
     return this.productsService.createOption(createOptionDto);
   }
 
+  @UseGuards(AuthGuard)
   @Get('/options')
   findAllOptions() {
     return this.productsService.findAllOptions();
   }
 
+  @UseGuards(AuthGuard)
   @Get('/options:id')
   findOneOption(@Param('id') id: string) {
     return this.productsService.findOneOption(+id);
   }
 
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.DEVELOPER)
   @Patch('/options:id')
   updateOption(@Param('id') id: string, @Body() updateOptionDto: UpdateOptionDto) {
     return this.productsService.updateOption(+id, updateOptionDto);
   }
 
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   @Delete('/options:id')
   removeOption(@Param('id') id: string) {
     return this.productsService.deleteOption(+id);
@@ -73,27 +85,33 @@ export class ProductsController {
 
   // --- CATEGORY ---
   @UseGuards(AuthGuard, RolesGuard)
-  @Roles(Role.DEVELOPER)
+  @Roles(Role.DEVELOPER, Role.ADMIN)
   @Post('/categories')
   createCategory(@Body() createCategoryDto: CreateCategoryDto) {
     return this.productsService.createCategory(createCategoryDto);
   }
 
+  @UseGuards(AuthGuard)
   @Get('/categories')
   findAllCategories() {
     return this.productsService.findAllCategories();
   }
 
+  @UseGuards(AuthGuard)
   @Get('/categories:id')
   findOne(@Param('id') id: string) {
     return this.productsService.findOneCategory(+id);
   }
 
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.DEVELOPER)
   @Patch('/categories:id')
   update(@Param('id') id: string, @Body() UpdateCategoryDto: UpdateCategoryDto) {
     return this.productsService.updateCategory(+id, UpdateCategoryDto);
   }
 
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   @Delete('/categories:id')
   remove(@Param('id') id: string) {
     return this.productsService.deleteCategory(+id);

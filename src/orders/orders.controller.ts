@@ -12,27 +12,33 @@ export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   @UseGuards(AuthGuard, RolesGuard)
-  @Roles(Role.DEVELOPER)
+  @Roles(Role.DEVELOPER, Role.ADMIN)
   @Post()
   create(@Body() createOrderDto: CreateOrderDto) {
     return this.ordersService.create(createOrderDto);
   }
 
+  @UseGuards(AuthGuard)
   @Get()
   findAll() {
     return this.ordersService.findAll();
   }
 
+  @UseGuards(AuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.ordersService.findOne(+id);
   }
 
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.DEVELOPER)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
     return this.ordersService.update(+id, updateOrderDto);
   }
 
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.ordersService.remove(+id);
