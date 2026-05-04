@@ -58,8 +58,8 @@ export class UsersController {
 
   @ApiBearerAuth()
   @ApiOperation({ 
-    summary: 'ACTUALIZAR UN USUARIO', 
-    description: 'Actualizacion de datos mediante id.' 
+    summary: 'HACER ADMIN A UN USUARIO', 
+    description: 'Solo un admin puede realizar esta operacion.' 
   })
   @ApiOkResponse({ type: UpdateUserDto, description: 'Operación realizada con éxito.',}) 
   @ApiBadRequestResponse({ description: 'ID inválido o error en los parámetros.' }) 
@@ -73,6 +73,16 @@ export class UsersController {
     return this.usersService.promoverAdmin(+id);
   }
 
+  @ApiBearerAuth()
+  @ApiOperation({ 
+    summary: 'ACTUALIZAR UN USUARIO', 
+    description: 'Actualizacion de datos mediante id (Solo el developer puede realizar esta operacion).' 
+  })
+  @ApiOkResponse({ type: UpdateUserDto, description: 'Operación realizada con éxito.',}) 
+  @ApiBadRequestResponse({ description: 'ID inválido o error en los parámetros.' }) 
+  @ApiUnauthorizedResponse({ description: 'No autenticado.' }) 
+  @ApiForbiddenResponse({ description: 'Acceso denegado por rol insuficiente.' }) 
+  @ApiNotFoundResponse({ description: 'El recurso solicitado no existe.' }) 
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.DEVELOPER)
   @Patch(':id')
@@ -80,6 +90,16 @@ export class UsersController {
     return this.usersService.update(+id, updateUserDto);
   }
 
+  @ApiBearerAuth()
+  @ApiOperation({ 
+    summary: 'ELIMINAR USUARIO', 
+    description: 'Elimina un usuario registro de forma permanente de la base de datos de Aiven (Esta operacion solo la puede realizar el admin).' 
+  })
+  @ApiOkResponse({ description: 'El registro ha sido eliminado correctamente.' }) 
+  @ApiBadRequestResponse({ description: 'El formato del ID proporcionado es inválido.' }) 
+  @ApiUnauthorizedResponse({ description: 'No se proporcionó un token JWT válido.' }) 
+  @ApiForbiddenResponse({ description: 'Acceso denegado. Se requiere rol ADMIN para esta operación.' })  
+  @ApiNotFoundResponse({ description: 'No se encontró ningún registro con el ID especificado.' })
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
   @Delete(':id')
