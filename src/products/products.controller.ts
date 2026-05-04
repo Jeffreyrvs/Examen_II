@@ -10,12 +10,23 @@ import { CreateOptionDto } from './dto/create-option.dto';
 import { UpdateOptionDto } from './dto/update-option.dto';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiForbiddenResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService,) {}
 
   // --- PRODUCTS ---
+  @ApiBearerAuth()
+  @ApiOperation({ 
+    summary: 'CREAR PRODUCT', 
+    description: 'Solo el Admin o el Developer puede realizar esta operación.' 
+  })
+  @ApiOkResponse({ type: CreateProductDto, description: 'Operación realizada con éxito.',}) 
+  @ApiBadRequestResponse({ description: 'ID inválido o error en los parámetros.' }) 
+  @ApiUnauthorizedResponse({ description: 'No autenticado.' }) 
+  @ApiForbiddenResponse({ description: 'Acceso denegado por rol insuficiente.' }) 
+  @ApiNotFoundResponse({ description: 'El recurso solicitado no existe.' }) 
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.DEVELOPER, Role.ADMIN)
   @Post()
@@ -23,18 +34,47 @@ export class ProductsController {
     return this.productsService.createProduct(createProductDto);
   }
 
+  @ApiBearerAuth()
+  @ApiOperation({ 
+    summary: 'OBTENER TODOS LOS PRODUCTOS', 
+    description: 'Todos los usuarios que hayan iniciado sesion pueden realizar esta operacion.' 
+  })
+  @ApiOkResponse({ description: 'Operación realizada con éxito.',}) 
+  @ApiBadRequestResponse({ description: 'ID inválido o error en los parámetros.' }) 
+  @ApiUnauthorizedResponse({ description: 'No autenticado.' }) 
+  @ApiNotFoundResponse({ description: 'El recurso solicitado no existe.' }) 
   @UseGuards(AuthGuard)
   @Get()
   findAllProducts() {
     return this.productsService.findAllProducts();
   }
 
+  @ApiBearerAuth()
+  @ApiOperation({ 
+    summary: 'OBTENER UN PRODUCTO POR ID', 
+    description: 'Obtención de datos mediante id.' 
+  })
+  @ApiOkResponse({ type: CreateProductDto, description: 'Operación realizada con éxito.',}) 
+  @ApiBadRequestResponse({ description: 'ID inválido o error en los parámetros.' }) 
+  @ApiUnauthorizedResponse({ description: 'No autenticado.' }) 
+  @ApiForbiddenResponse({ description: 'Acceso denegado por rol insuficiente.' }) 
+  @ApiNotFoundResponse({ description: 'El recurso solicitado no existe.' }) 
   @UseGuards(AuthGuard)
   @Get(':id')
   findOneProduct(@Param('id') id: string) {
     return this.productsService.findOneProduct(+id);
   }
 
+  @ApiBearerAuth()
+  @ApiOperation({ 
+    summary: 'ACTUALIZAR UN PRODUCTO', 
+    description: 'Actualizacion de datos mediante id.' 
+  })
+  @ApiOkResponse({ type: UpdateProductDto, description: 'Operación realizada con éxito.',}) 
+  @ApiBadRequestResponse({ description: 'ID inválido o error en los parámetros.' }) 
+  @ApiUnauthorizedResponse({ description: 'No autenticado.' }) 
+  @ApiForbiddenResponse({ description: 'Acceso denegado por rol insuficiente.' }) 
+  @ApiNotFoundResponse({ description: 'El recurso solicitado no existe.' }) 
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.DEVELOPER, Role.ADMIN)
   @Patch(':id')
@@ -42,6 +82,16 @@ export class ProductsController {
     return this.productsService.updateProduct(+id, updateProductDto);
   }
 
+  @ApiBearerAuth()
+  @ApiOperation({ 
+    summary: 'ELIMINAR PRODUCTO', 
+    description: 'Elimina un registro de forma permanente de la base de datos de Aiven.' 
+  })
+  @ApiOkResponse({ description: 'El registro ha sido eliminado correctamente.' }) 
+  @ApiBadRequestResponse({ description: 'El formato del ID proporcionado es inválido.' }) 
+  @ApiUnauthorizedResponse({ description: 'No se proporcionó un token JWT válido.' }) 
+  @ApiForbiddenResponse({ description: 'Acceso denegado. Se requiere rol ADMIN para esta operación.' })  
+  @ApiNotFoundResponse({ description: 'No se encontró ningún registro con el ID especificado.' }) 
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
   @Delete(':id')
@@ -50,6 +100,16 @@ export class ProductsController {
   }
 
   // --- OPTIONS ---
+  @ApiBearerAuth()
+  @ApiOperation({ 
+    summary: 'CREAR OPTION', 
+    description: 'Solo el Admin o el Developer puede realizar esta operación.' 
+  })
+  @ApiOkResponse({ type: CreateOptionDto, description: 'Operación realizada con éxito.',}) 
+  @ApiBadRequestResponse({ description: 'ID inválido o error en los parámetros.' }) 
+  @ApiUnauthorizedResponse({ description: 'No autenticado.' }) 
+  @ApiForbiddenResponse({ description: 'Acceso denegado por rol insuficiente.' }) 
+  @ApiNotFoundResponse({ description: 'El recurso solicitado no existe.' }) 
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.DEVELOPER, Role.ADMIN)
   @Post('/options')
@@ -57,18 +117,47 @@ export class ProductsController {
     return this.productsService.createOption(createOptionDto);
   }
 
+  @ApiBearerAuth()
+  @ApiOperation({ 
+    summary: 'OBTENER TODAS LAS OPCIONES', 
+    description: 'Todos los usuarios que hayan iniciado sesion pueden realizar esta operacion.' 
+  })
+  @ApiOkResponse({ description: 'Operación realizada con éxito.',}) 
+  @ApiBadRequestResponse({ description: 'ID inválido o error en los parámetros.' }) 
+  @ApiUnauthorizedResponse({ description: 'No autenticado.' }) 
+  @ApiNotFoundResponse({ description: 'El recurso solicitado no existe.' }) 
   @UseGuards(AuthGuard)
   @Get('/options')
   findAllOptions() {
     return this.productsService.findAllOptions();
   }
 
+  @ApiBearerAuth()
+  @ApiOperation({ 
+    summary: 'OBTENER UNA OPCION POR ID', 
+    description: 'Obtención de datos mediante id.' 
+  })
+  @ApiOkResponse({ type: CreateOptionDto, description: 'Operación realizada con éxito.',}) 
+  @ApiBadRequestResponse({ description: 'ID inválido o error en los parámetros.' }) 
+  @ApiUnauthorizedResponse({ description: 'No autenticado.' }) 
+  @ApiForbiddenResponse({ description: 'Acceso denegado por rol insuficiente.' }) 
+  @ApiNotFoundResponse({ description: 'El recurso solicitado no existe.' }) 
   @UseGuards(AuthGuard)
   @Get('/options:id')
   findOneOption(@Param('id') id: string) {
     return this.productsService.findOneOption(+id);
   }
 
+  @ApiBearerAuth()
+  @ApiOperation({ 
+    summary: 'ACTUALIZAR UNA OPCION', 
+    description: 'Actualizacion de datos mediante id.' 
+  })
+  @ApiOkResponse({ type: UpdateOptionDto, description: 'Operación realizada con éxito.',}) 
+  @ApiBadRequestResponse({ description: 'ID inválido o error en los parámetros.' }) 
+  @ApiUnauthorizedResponse({ description: 'No autenticado.' }) 
+  @ApiForbiddenResponse({ description: 'Acceso denegado por rol insuficiente.' }) 
+  @ApiNotFoundResponse({ description: 'El recurso solicitado no existe.' }) 
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.DEVELOPER)
   @Patch('/options:id')
@@ -76,6 +165,16 @@ export class ProductsController {
     return this.productsService.updateOption(+id, updateOptionDto);
   }
 
+  @ApiBearerAuth()
+  @ApiOperation({ 
+    summary: 'ELIMINAR OPCION', 
+    description: 'Elimina un registro de forma permanente de la base de datos de Aiven.' 
+  })
+  @ApiOkResponse({ description: 'El registro ha sido eliminado correctamente.' }) 
+  @ApiBadRequestResponse({ description: 'El formato del ID proporcionado es inválido.' }) 
+  @ApiUnauthorizedResponse({ description: 'No se proporcionó un token JWT válido.' }) 
+  @ApiForbiddenResponse({ description: 'Acceso denegado. Se requiere rol ADMIN para esta operación.' })  
+  @ApiNotFoundResponse({ description: 'No se encontró ningún registro con el ID especificado.' }) 
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
   @Delete('/options:id')
@@ -84,6 +183,16 @@ export class ProductsController {
   }
 
   // --- CATEGORY ---
+  @ApiBearerAuth()
+  @ApiOperation({ 
+    summary: 'CREAR CATEGORY', 
+    description: 'Solo el Admin o el Developer puede realizar esta operación.' 
+  })
+  @ApiOkResponse({ type: CreateCategoryDto, description: 'Operación realizada con éxito.',}) 
+  @ApiBadRequestResponse({ description: 'ID inválido o error en los parámetros.' }) 
+  @ApiUnauthorizedResponse({ description: 'No autenticado.' }) 
+  @ApiForbiddenResponse({ description: 'Acceso denegado por rol insuficiente.' }) 
+  @ApiNotFoundResponse({ description: 'El recurso solicitado no existe.' }) 
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.DEVELOPER, Role.ADMIN)
   @Post('/categories')
@@ -91,18 +200,47 @@ export class ProductsController {
     return this.productsService.createCategory(createCategoryDto);
   }
 
+  @ApiBearerAuth()
+  @ApiOperation({ 
+    summary: 'OBTENER TODAS LAS CATEGORIAS', 
+    description: 'Todos los usuarios que hayan iniciado sesion pueden realizar esta operacion.' 
+  })
+  @ApiOkResponse({ description: 'Operación realizada con éxito.',}) 
+  @ApiBadRequestResponse({ description: 'ID inválido o error en los parámetros.' }) 
+  @ApiUnauthorizedResponse({ description: 'No autenticado.' }) 
+  @ApiNotFoundResponse({ description: 'El recurso solicitado no existe.' }) 
   @UseGuards(AuthGuard)
   @Get('/categories')
   findAllCategories() {
     return this.productsService.findAllCategories();
   }
 
+  @ApiBearerAuth()
+  @ApiOperation({ 
+    summary: 'OBTENER UNA CATEGORIA POR ID', 
+    description: 'Obtención de datos mediante id.' 
+  })
+  @ApiOkResponse({ type: CreateProductDto, description: 'Operación realizada con éxito.',}) 
+  @ApiBadRequestResponse({ description: 'ID inválido o error en los parámetros.' }) 
+  @ApiUnauthorizedResponse({ description: 'No autenticado.' }) 
+  @ApiForbiddenResponse({ description: 'Acceso denegado por rol insuficiente.' }) 
+  @ApiNotFoundResponse({ description: 'El recurso solicitado no existe.' }) 
   @UseGuards(AuthGuard)
   @Get('/categories:id')
   findOne(@Param('id') id: string) {
     return this.productsService.findOneCategory(+id);
   }
 
+  @ApiBearerAuth()
+  @ApiOperation({ 
+    summary: 'ACTUALIZAR UNA CATEGORIA', 
+    description: 'Actualizacion de datos mediante id.' 
+  })
+  @ApiOkResponse({ type: UpdateProductDto, description: 'Operación realizada con éxito.',}) 
+  @ApiBadRequestResponse({ description: 'ID inválido o error en los parámetros.' }) 
+  @ApiUnauthorizedResponse({ description: 'No autenticado.' }) 
+  @ApiForbiddenResponse({ description: 'Acceso denegado por rol insuficiente.' }) 
+  @ApiNotFoundResponse({ description: 'El recurso solicitado no existe.' }) 
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.DEVELOPER)
   @Patch('/categories:id')
@@ -110,6 +248,16 @@ export class ProductsController {
     return this.productsService.updateCategory(+id, UpdateCategoryDto);
   }
 
+  @ApiBearerAuth()
+  @ApiOperation({ 
+    summary: 'ELIMINAR CATEGORIA', 
+    description: 'Elimina un registro de forma permanente de la base de datos de Aiven.' 
+  })
+  @ApiOkResponse({ description: 'El registro ha sido eliminado correctamente.' }) 
+  @ApiBadRequestResponse({ description: 'El formato del ID proporcionado es inválido.' }) 
+  @ApiUnauthorizedResponse({ description: 'No se proporcionó un token JWT válido.' }) 
+  @ApiForbiddenResponse({ description: 'Acceso denegado. Se requiere rol ADMIN para esta operación.' })  
+  @ApiNotFoundResponse({ description: 'No se encontró ningún registro con el ID especificado.' }) 
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
   @Delete('/categories:id')
