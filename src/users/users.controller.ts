@@ -44,16 +44,15 @@ export class UsersController {
   @ApiNotFoundResponse({ description: 'El recurso solicitado no existe.' }) 
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.DEVELOPER, Role.ADMIN, Role.USER)
+  @Get()
   async getProfile(@Req() req: Request) {
-    const currentUser = req['user'] 
+    const currentUser = req['user'];
 
-    // Si es ADMIN o DEVELOPER
     if (currentUser.role !== Role.USER) {
       return this.usersService.findAll();
     }
 
-    // Si es USER
-    return this.usersService.findOne(currentUser.id, currentUser);
+    return this.usersService.findOne(currentUser.sub, currentUser); 
   }
 
   @ApiBearerAuth()

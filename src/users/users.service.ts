@@ -16,9 +16,9 @@ export class UsersService {
     return this.repoUser.save(user);
   }
 
-  async findOne(id: number, usuarioActual: User): Promise <User> {
+  async findOne(id: number, usuarioActual: any): Promise <User> {
     // Si es user verificar que sea el suyo
-    if (usuarioActual.role == Role.USER && usuarioActual.id != id) {
+    if (usuarioActual.role == Role.USER && usuarioActual.sub != id) {
       throw new ForbiddenException('No tienes permiso para ver el perfil de otro usuario');
     }
 
